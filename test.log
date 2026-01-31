@@ -1,0 +1,2 @@
+{"timestamp": 1769839142.1589313, "source_ip": "127.0.0.1", "username": "root", "password": "testpassword", "commands": ["e", "echo \"text\"", "ls", "cd bin", "ls", "cd etc", "what is happening?", "exit", "exit"]}
+{"timestamp": 1769840306.9099987, "source_ip": "127.0.0.1", "username": "root", "password": "testpassword", "commands": ["l", "s", "ls", "echo \"hi\"", "echo lol", "cd bin", "ls", "cd etc", "ls", "cat sha"]}
