@@ -9,7 +9,7 @@ ATTR_END = 0xFFFFFFFF
 
 
 class MFTEntry:
-    def __init__(self, raw):
+    def __init__(self, raw: bytes):
         self.raw = raw
         self.valid = raw[0:4] == b"FILE"
         self.attributes = []
@@ -21,27 +21,20 @@ class MFTEntry:
         attr_offset = struct.unpack("<H", self.raw[20:22])[0]
 
         while attr_offset < MFT_ENTRY_SIZE - 8:
-            attr_type = struct.unpack("<I", self.raw[attr_offset:attr_offset + 4])[0]
+            header = self.raw[attr_offset:attr_offset + 8]
+            attr_type, attr_len = struct.unpack("<II", header)
 
             if attr_type == ATTR_END:
                 break
 
-            attr_len = struct.unpack("<I", self.raw[attr_offset + 4:attr_offset + 8])[0]
-
-            # CRITICAL FIX: invalid attribute length guard
-            if attr_len < 24:
+            if attr_len < 24 or attr_offset + attr_len > MFT_ENTRY_SIZE:
                 break
 
             non_res = self.raw[attr_offset + 8]
 
-            if non_res == 0:  # Resident
-                content_len = struct.unpack(
-                    "<I", self.raw[attr_offset + 16:attr_offset + 20]
-                )[0]
-
-                content_offset = struct.unpack(
-                    "<H", self.raw[attr_offset + 20:attr_offset + 22]
-                )[0]
+            if non_res == 0:
+                content_len = struct.unpack("<I", self.raw[attr_offset + 16:attr_offset + 20])[0]
+                content_offset = struct.unpack("<H", self.raw[attr_offset + 20:attr_offset + 22])[0]
 
                 content_start = attr_offset + content_offset
                 content_end = content_start + content_len
@@ -53,7 +46,6 @@ class MFTEntry:
 
                 if attr_type == ATTR_STANDARD_INFORMATION:
                     self.attributes.append(parse_standard_info(content))
-
                 elif attr_type == ATTR_FILE_NAME:
                     self.attributes.append(parse_file_name(content))
 
