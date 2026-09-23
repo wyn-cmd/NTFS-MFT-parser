@@ -1,3 +1,5 @@
+# ntfs mft parser implementation for reading master file table records
+
 import struct
 from utils import filetime_to_dt, read_utf16le_string
 
@@ -8,6 +10,7 @@ ATTR_FILE_NAME = 0x30
 ATTR_END = 0xFFFFFFFF
 
 
+# represents a single parsed mft record entry
 class MFTEntry:
     def __init__(self, raw: bytes):
         self.raw = raw
