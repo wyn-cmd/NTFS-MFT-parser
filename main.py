@@ -1,20 +1,20 @@
 # entry point for the ntfs mft parser tool
 # builds and displays the timeline from the test log
 
+import sys
 from timeline import build_timeline, print_timeline
 
+# main routine to orchestrate timeline generation and output
 def main():
-    # load and parse the timeline entries up to the default limit
     try:
         timeline = build_timeline("test.log", limit=500)
     except FileNotFoundError:
-        print("error: test.log not found.")
-        return
+        print("error: test.log not found.", file=sys.stderr)
+        sys.exit(1)
     except Exception as e:
-        print(f"error building timeline: {e}")
-        return
+        print(f"error building timeline: {e}", file=sys.stderr)
+        sys.exit(1)
 
-    # output the results to stdout
     print_timeline(timeline)
 
 if __name__ == "__main__":
