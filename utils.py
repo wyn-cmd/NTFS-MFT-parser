@@ -10,6 +10,11 @@ NTFS_EPOCH = datetime.datetime(1601, 1, 1)
 def filetime_to_dt(filetime: int) -> Optional[datetime.datetime]:
     if not filetime:
         return None
+    
+    # Avoid out of bounds values before doing math
+    if filetime < 0:
+        return None
+
     try:
         return NTFS_EPOCH + datetime.timedelta(microseconds=filetime // 10)
     except (OverflowError, ValueError):
@@ -19,6 +24,7 @@ def filetime_to_dt(filetime: int) -> Optional[datetime.datetime]:
 def read_utf16le_string(data: bytes) -> str:
     if not data:
         return ""
+        
     try:
         return data.decode("utf-16le").rstrip("\x00")
     except (UnicodeDecodeError, AttributeError):
