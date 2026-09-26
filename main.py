@@ -6,9 +6,10 @@ from timeline import build_timeline, print_timeline
 def main():
     # load and parse the timeline entries up to the default limit
     try:
-        timeline = build_timeline("test.log", limit=500)
+        timeline = build_timeline("MFT.raw", limit=500)
     except FileNotFoundError:
-        print("error: test.log not found.")
+        print("error: MFT.raw not found. Extract the $MFT from an NTFS volume "
+              "and place it in the project directory as MFT.raw.")
         return
     except Exception as e:
         print(f"error building timeline: {e}")

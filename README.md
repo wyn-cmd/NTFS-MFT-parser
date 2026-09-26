@@ -25,3 +25,11 @@ Designed for digital forensics & incident response (DFIR) work.
 ```bash
 python main.py
 ```
+
+## Tests
+
+```bash
+python3 -m unittest discover tests
+```
+
+Six tests build a synthetic $MFT entry in memory and confirm STANDARD_INFORMATION and FILE_NAME parse correctly, including the filename and all four timestamps, plus the filetime overflow guard.
