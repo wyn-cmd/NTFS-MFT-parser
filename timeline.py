@@ -1,8 +1,8 @@
 from ntfs_mft_parser import MFTEntry, MFT_ENTRY_SIZE
 
 
+# Parses an MFT file and builds a chronological or sequential list of file attribute timestamps.
 def build_timeline(mft_path, limit=None):
-    """Parses an MFT file and builds a chronological or sequential list of file attribute timestamps."""
     timeline = []
 
     try:
@@ -48,8 +48,8 @@ def build_timeline(mft_path, limit=None):
     return timeline
 
 
+# Pretty prints the generated timeline events to stdout.
 def print_timeline(timeline):
-    """Pretty prints the generated timeline events to stdout."""
     if not timeline:
         print("[!] No NTFS artifacts found.")
         return
